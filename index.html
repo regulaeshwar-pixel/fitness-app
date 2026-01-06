@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+  <meta charset="UTF-8">
+  <title>Simple Fitness App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#4caf50">
+
+
+</head>
+
+
+<body>
+
+  <!-- STREAK -->
+  <h2>🔥 Streak: <span id="streakCount">0</span> days</h2>
+<h2>🏅 Today’s Badges</h2>
+<ul id="badgeList"></ul>
+
+  <hr>
+
+  <!-- TODAY INFO -->
+  <h1>Today's Workout</h1>
+  <h2 id="day"></h2>
+  <h3 id="workoutType"></h3>
+
+  <!-- WORKOUT LIST -->
+  <form id="workoutForm">
+    <ul id="exerciseList"></ul>
+  </form>
+
+  <p id="status"></p>
+
+  <!-- MASAI JUMPS -->
+  <div id="masaiJumps"></div>
+
+  <hr>
+
+  <!-- POSTURE ROUTINE -->
+  <h2>🧍 Daily Posture & Height Routine</h2>
+
+  <form id="postureForm">
+    <ul id="postureList"></ul>
+  </form>
+
+  <p id="postureStatus"></p>
+
+  <hr>
+
+<h2>🍽 Daily Nutrition Timeline</h2>
+
+<ul id="nutritionList"></ul>
+<hr>
+
+<h2>📅 Weekly Workout Plan</h2>
+
+<ul id="weeklyView"></ul>
+
+
+  <!-- SCRIPTS -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+<script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker
+      .register("service-worker.js")
+      .then(() => console.log("Service Worker Registered"));
+  }
+</script>
+</body>
+</html>
+<hr>
+
+<h2>📜 History</h2>
+<ul id="historyList"></ul>
