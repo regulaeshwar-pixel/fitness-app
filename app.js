@@ -70,14 +70,14 @@ if (todayData.exercises.length === 0) {
     localStorage.setItem("streak", streak);
     localStorage.setItem("lastCompletedDate", todayDate);
     localStorage.setItem(
-  `history-${todayDate}`,
-  JSON.stringify({
-    date: todayDate,
-    workout: true,
-    posture: localStorage.getItem(postureKey) === "true",
-    nutrition: true
-  })
-);
+      `history-${todayDate}`,
+      JSON.stringify({
+        date: todayDate,
+        workout: true,
+        posture: localStorage.getItem(postureKey) === "true",
+        nutrition: true
+      })
+    );
 
   }
 }
@@ -88,6 +88,7 @@ if (todayData.exercises.length === 0) {
 const workoutCompleted = localStorage.getItem(todayKey) === "true";
 
 const workoutCheckboxes = [];
+const workoutFragment = document.createDocumentFragment();
 todayData.exercises.forEach((ex, index) => {
   const li = document.createElement("li");
 
@@ -95,7 +96,6 @@ todayData.exercises.forEach((ex, index) => {
   checkbox.type = "checkbox";
   checkbox.checked = workoutCompleted;
 
-  checkbox.addEventListener("change", checkWorkoutCompletion);
   workoutCheckboxes.push(checkbox);
 
   const label = document.createElement("label");
@@ -103,7 +103,14 @@ todayData.exercises.forEach((ex, index) => {
 
   li.appendChild(checkbox);
   li.appendChild(label);
-  exerciseList.appendChild(li);
+  workoutFragment.appendChild(li);
+});
+exerciseList.appendChild(workoutFragment);
+
+exerciseList.addEventListener("change", (e) => {
+  if (e.target.matches("input[type='checkbox']")) {
+    checkWorkoutCompletion();
+  }
 });
 
 // ===============================
@@ -135,16 +142,15 @@ function checkWorkoutCompletion() {
     statusEl.textContent = "Workout Incomplete ❌";
   }
   const historyKey = `history-${todayDate}`;
-localStorage.setItem(
-  historyKey,
-  JSON.stringify({
-    date: todayDate,
-    workout: true,
-    posture: localStorage.getItem(postureKey) === "true",
-    nutrition: true
-  })
-);
-
+  localStorage.setItem(
+    historyKey,
+    JSON.stringify({
+      date: todayDate,
+      workout: true,
+      posture: localStorage.getItem(postureKey) === "true",
+      nutrition: true
+    })
+  );
 
   streakEl.textContent = streak;
 }
@@ -155,6 +161,7 @@ localStorage.setItem(
 const postureCompleted = localStorage.getItem(postureKey) === "true";
 
 const postureCheckboxes = [];
+const postureFragment = document.createDocumentFragment();
 fitnessPlan.dailyPostureRoutine.forEach((ex, index) => {
   const li = document.createElement("li");
 
@@ -162,7 +169,6 @@ fitnessPlan.dailyPostureRoutine.forEach((ex, index) => {
   checkbox.type = "checkbox";
   checkbox.checked = postureCompleted;
 
-  checkbox.addEventListener("change", checkPostureCompletion);
   postureCheckboxes.push(checkbox);
 
   const label = document.createElement("label");
@@ -174,7 +180,14 @@ fitnessPlan.dailyPostureRoutine.forEach((ex, index) => {
 
   li.appendChild(checkbox);
   li.appendChild(label);
-  postureList.appendChild(li);
+  postureFragment.appendChild(li);
+});
+postureList.appendChild(postureFragment);
+
+postureList.addEventListener("change", (e) => {
+  if (e.target.matches("input[type='checkbox']")) {
+    checkPostureCompletion();
+  }
 });
 
 // ===============================
@@ -202,6 +215,7 @@ postureStatus.textContent = postureCompleted
 // NUTRITION TIMELINE
 // ===============================
 const nutritionList = document.getElementById("nutritionList");
+const nutritionFragment = document.createDocumentFragment();
 
 fitnessPlan.nutritionSchedule.forEach(item => {
   const li = document.createElement("li");
@@ -219,12 +233,15 @@ fitnessPlan.nutritionSchedule.forEach(item => {
   li.appendChild(title);
   li.appendChild(details);
 
-  nutritionList.appendChild(li);
+  nutritionFragment.appendChild(li);
 });
+nutritionList.appendChild(nutritionFragment);
+
 // ===============================
 // WEEKLY MON–SUN VIEW
 // ===============================
 const weeklyView = document.getElementById("weeklyView");
+const weeklyFragment = document.createDocumentFragment();
 
 const weekDays = [
   "Monday",
@@ -255,8 +272,10 @@ weekDays.forEach(day => {
   li.textContent =
     `${day} — ${dayData.workoutType} ${masaiText} → ${status}`;
 
-  weeklyView.appendChild(li);
+  weeklyFragment.appendChild(li);
 });
+weeklyView.appendChild(weeklyFragment);
+
 // ===============================
 // DAILY BADGES
 // ===============================
@@ -271,19 +290,23 @@ const nutritionViewedKey = `nutrition-${todayDate}`;
 localStorage.setItem(nutritionViewedKey, "true");
 const nutritionDone = true;
 
+const badgeFragment = document.createDocumentFragment();
 function addBadge(label, done) {
   const li = document.createElement("li");
   li.textContent = done ? `✅ ${label}` : `❌ ${label}`;
-  badgeList.appendChild(li);
+  badgeFragment.appendChild(li);
 }
 
 addBadge("Workout Completed", workoutDone);
 addBadge("Posture Routine Completed", postureDone);
 addBadge("Nutrition Followed", nutritionDone);
+badgeList.appendChild(badgeFragment);
+
 // ===============================
 // HISTORY VIEW
 // ===============================
 const historyList = document.getElementById("historyList");
+const historyFragment = document.createDocumentFragment();
 
 for (let key in localStorage) {
   if (key.startsWith("history-")) {
@@ -296,6 +319,7 @@ for (let key in localStorage) {
       `Posture: ${record.posture ? "✅" : "❌"}, ` +
       `Nutrition: ${record.nutrition ? "✅" : "❌"}`;
 
-    historyList.appendChild(li);
+    historyFragment.appendChild(li);
   }
 }
+historyList.appendChild(historyFragment);
