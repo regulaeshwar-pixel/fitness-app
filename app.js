@@ -87,6 +87,7 @@ if (todayData.exercises.length === 0) {
 // ===============================
 const workoutCompleted = localStorage.getItem(todayKey) === "true";
 
+const workoutCheckboxes = [];
 todayData.exercises.forEach((ex, index) => {
   const li = document.createElement("li");
 
@@ -95,6 +96,7 @@ todayData.exercises.forEach((ex, index) => {
   checkbox.checked = workoutCompleted;
 
   checkbox.addEventListener("change", checkWorkoutCompletion);
+  workoutCheckboxes.push(checkbox);
 
   const label = document.createElement("label");
   label.textContent = ` ${ex.name} — ${ex.sets} × ${ex.reps}`;
@@ -116,8 +118,7 @@ if (todayData.masaiJumps) {
 // WORKOUT COMPLETION
 // ===============================
 function checkWorkoutCompletion() {
-  const checkboxes = document.querySelectorAll("#exerciseList input");
-  const allChecked = [...checkboxes].every(cb => cb.checked);
+  const allChecked = workoutCheckboxes.every(cb => cb.checked);
 
   if (allChecked) {
     localStorage.setItem(todayKey, "true");
@@ -153,6 +154,7 @@ localStorage.setItem(
 // ===============================
 const postureCompleted = localStorage.getItem(postureKey) === "true";
 
+const postureCheckboxes = [];
 fitnessPlan.dailyPostureRoutine.forEach((ex, index) => {
   const li = document.createElement("li");
 
@@ -161,6 +163,7 @@ fitnessPlan.dailyPostureRoutine.forEach((ex, index) => {
   checkbox.checked = postureCompleted;
 
   checkbox.addEventListener("change", checkPostureCompletion);
+  postureCheckboxes.push(checkbox);
 
   const label = document.createElement("label");
   let details = "";
@@ -178,8 +181,7 @@ fitnessPlan.dailyPostureRoutine.forEach((ex, index) => {
 // POSTURE COMPLETION
 // ===============================
 function checkPostureCompletion() {
-  const checkboxes = document.querySelectorAll("#postureList input");
-  const allChecked = [...checkboxes].every(cb => cb.checked);
+  const allChecked = postureCheckboxes.every(cb => cb.checked);
 
   postureStatus.textContent = allChecked
     ? "Posture Routine Completed ✅"
